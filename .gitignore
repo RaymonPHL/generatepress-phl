@@ -1,0 +1,19 @@
+# Ignorar todos los archivos
+*
+# Directorio PHL-base
+!/PHL-base/*
+!/examples/**
+# Excepciones globales
+!*/
+!.gitkeep
+!.gitignore
+# Archivos del tema hijo
+!PHL-*
+# Archivos base del tema hijo
+!/functions.php
+!/README.md
+!/screenshot.jpeg
+!/style.css
+# Archivo flag para debugear más facilmente
+!/_debug.flag
+!/debug.flag
