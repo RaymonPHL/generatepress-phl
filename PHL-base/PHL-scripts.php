@@ -28,8 +28,6 @@ function add_ALL_scripts() {
                 'all-scripts-minified',
                 $combined_js,
                 array('jquery'), // Dependencia de jQuery
-                filemtime($combined_js), // Usar timestamp para cache busting
-                true // Cargar en el footer
             );
         }
     } else {

@@ -7,6 +7,51 @@ function plugin_activo( $plugin ){
     return in_array( $plugin, apply_filters( 'active_plugins', ( array ) get_option( 'active_plugins', array() ) ) ) ||  ( is_multisite() && array_key_exists( $plugin, ( array ) get_site_option( 'active_sitewide_plugins', array() ) ) );   
 }
 
+// Limpiar archivos combinados antiguos periódicamente en todos los subdirectorios de /uploads/PHL-cache/
+function clean_old_combined_cache_phl() {
+    $upload_dir = wp_upload_dir();
+    $base_cache_dir = $upload_dir['basedir'] . '/PHL-cache/';
+    
+    // Verificar que el directorio base existe
+    if (!is_dir($base_cache_dir)) {
+        return;
+    }
+    
+    // Obtener todos los subdirectorios dentro de PHL-cache
+    $subdirectories = glob($base_cache_dir . '*', GLOB_ONLYDIR);
+    
+    foreach ($subdirectories as $directory) {
+        // Buscar archivos PHL-combined-* en cada subdirectorio (cualquier extensión)
+        $files = glob($directory . '/PHL-combined-*');
+        
+        // Filtrar solo archivos (no directorios)
+        $files = array_filter($files, 'is_file');
+        
+        // Si hay más de 5 archivos, limpiar los más antiguos
+        if (count($files) > 5) {
+            // Ordenar por fecha de modificación (más antiguos primero)
+            usort($files, function($a, $b) {
+                return filemtime($a) - filemtime($b);
+            });
+            
+            // Eliminar los más antiguos (excepto los 5 más recientes)
+            $files_to_delete = count($files) - 5;
+            for ($i = 0; $i < $files_to_delete; $i++) {
+                unlink($files[$i]);
+            }
+            
+            // Opcional: registrar la limpieza
+            error_log("PHL Cache: Limpiados $files_to_delete archivos antiguos en " . basename($directory));
+        }
+    }
+}
+// Ejecutar limpieza ocasionalmente (con probabilidad del 1% para no sobrecargar)
+add_action('wp', function() {
+    if (mt_rand(1, 100) === 1) { // 1% de probabilidad
+        clean_old_combined_cache_phl();
+    }
+});
+
 // FUNCIONES AUXILIARES de CSS
 // ===========================
 // Función para combinar y minificar CSS
@@ -34,10 +79,11 @@ function combine_and_minify_css($css_dir) {
     // Crear nombre de archivo único basado en los archivos combinados
     $combined_filename = 'PHL-combined-' . md5(implode('', $files_to_combine)) . '.min.css';
     
-    // Crear directorio si no existe
-    $cache_dir = get_stylesheet_directory() . '/cache/css/';
+    // Obtener directorio de uploads
+    $upload_dir = wp_upload_dir();
+    $cache_dir = $upload_dir['basedir'] . '/PHL-cache/css/';
     wp_mkdir_p($cache_dir);
-    
+
     // Añadir archivos de seguridad si el directorio era nuevo
     if (!file_exists($cache_dir . 'index.php')) {
         file_put_contents($cache_dir . 'index.php', '<?php // Silence is golden');
@@ -45,9 +91,9 @@ function combine_and_minify_css($css_dir) {
     if (!file_exists($cache_dir . '.htaccess')) {
         file_put_contents($cache_dir . '.htaccess', "Options -Indexes\nDeny from all");
     }
-    
+
     $combined_path = $cache_dir . $combined_filename;
-    $combined_url = get_stylesheet_directory_uri() . '/cache/css/' . $combined_filename;
+    $combined_url = $upload_dir['baseurl'] . '/PHL-cache/css/' . $combined_filename;
     
     // Guardar el archivo combinado (si no existe o ha cambiado)
     if (!file_exists($combined_path) || file_get_contents($combined_path) !== $minified_css) {
@@ -78,28 +124,6 @@ function minify_css($css) {
     
     return trim($css);
 }
-
-// Opcional: Limpiar archivos combinados antiguos periódicamente
-function clean_old_combined_css() {
-    $css_dir_cached = get_stylesheet_directory() . '/cache/css/';
-    $files = glob($css_dir_cached . 'PHL-combined-*.min.css');
-    
-    // Mantener solo los últimos 5 archivos combinados
-    if (count($files) > 5) {
-        // Ordenar por fecha de modificación (más antiguos primero)
-        usort($files, function($a, $b) {
-            return filemtime($a) - filemtime($b);
-        });
-        
-        // Eliminar los más antiguos (excepto los 5 más recientes)
-        for ($i = 0; $i < count($files) - 5; $i++) {
-            unlink($files[$i]);
-        }
-    }
-}
-
-// Ejecutar limpieza ocasionalmente
-add_action('wp', 'clean_old_combined_css');
 
 
 // FUNCIONES AUXILIARES de FUENTES
@@ -169,10 +193,11 @@ function combine_and_minify_js($js_dir) {
     // Crear nombre de archivo único basado en los archivos combinados
     $combined_filename = 'PHL-combined-' . md5(implode('', $files_to_combine)) . '.min.js';
     
-    // Crear directorio si no existe
-    $cache_dir = get_stylesheet_directory() . '/cache/js/';
+    // Obtener directorio de uploads
+    $upload_dir = wp_upload_dir();
+    $cache_dir = $upload_dir['basedir'] . '/PHL-cache/js/';
     wp_mkdir_p($cache_dir);
-    
+
     // Añadir archivos de seguridad si el directorio era nuevo
     if (!file_exists($cache_dir . 'index.php')) {
         file_put_contents($cache_dir . 'index.php', '<?php // Silence is golden');
@@ -180,9 +205,9 @@ function combine_and_minify_js($js_dir) {
     if (!file_exists($cache_dir . '.htaccess')) {
         file_put_contents($cache_dir . '.htaccess', "Options -Indexes\nDeny from all");
     }
-    
+
     $combined_path = $cache_dir . $combined_filename;
-    $combined_url = get_stylesheet_directory_uri() . '/cache/js/' . $combined_filename;
+    $combined_url = $upload_dir['baseurl'] . '/PHL-cache/js/' . $combined_filename;
     
     // Guardar el archivo combinado (si no existe o ha cambiado)
     if (!file_exists($combined_path) || file_get_contents($combined_path) !== $minified_js) {
@@ -216,25 +241,3 @@ function minify_js($js) {
     
     return trim($js);
 }
-
-// Opcional: Limpiar archivos combinados antiguos periódicamente
-function clean_old_combined_js() {
-    $js_dir_cached = get_stylesheet_directory() . '/cache/js/';
-    $files = glob($js_dir_cached . 'PHL-combined-*.min.js');
-    
-    // Mantener solo los últimos 5 archivos combinados
-    if (count($files) > 5) {
-        // Ordenar por fecha de modificación (más antiguos primero)
-        usort($files, function($a, $b) {
-            return filemtime($a) - filemtime($b);
-        });
-        
-        // Eliminar los más antiguos (excepto los 5 más recientes)
-        for ($i = 0; $i < count($files) - 5; $i++) {
-            unlink($files[$i]);
-        }
-    }
-}
-
-// Ejecutar limpieza ocasionalmente
-add_action('wp', 'clean_old_combined_js');

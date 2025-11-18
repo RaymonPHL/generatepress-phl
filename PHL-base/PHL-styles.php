@@ -29,10 +29,7 @@ function add_ALL_styles() {
         if ($combined_css) {
             wp_enqueue_style(
                 'all-styles-minified',
-                $combined_css,
-                array(),
-                filemtime($combined_css), // Usar timestamp para cache busting
-                'all'
+                $combined_css
             );
         }
     } else {
