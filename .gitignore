@@ -1,7 +1,8 @@
 # Ignorar todos los archivos
 *
-# Archivo de configuración del tema.
-!/theme.config.php
+# Plantilla de configuracion del tema.
+!/theme.config.php.org
+theme.config.php
 # Directorio PHL-base
 !/PHL-base/*
 !/examples/**

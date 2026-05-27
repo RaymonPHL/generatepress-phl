@@ -1,0 +1,39 @@
+/*
+Theme Name: GeneratePress PHL
+Theme URI: http://phl.cc
+Author: RaymonPHL
+Author URI: http://phl.cc
+Description: Tema hijo de GeneratePress de PHL.cc
+Text Domain: generatepress-phl
+Template: generatepress
+*/
+html[data-theme="dark"],
+body[data-theme="dark"],
+[data-theme="dark"]{
+
+	--color-bg:#111a1f;
+	--color-bg-alt:#18262c;
+
+	--color-text:#f7fbfc;
+	--color-text-soft:#a7bbc1;
+
+	--color-border:#2b3f46;
+
+	--header-bg:var(--color-bg);
+	--header-text:var(--color-text);
+	--header-link:var(--color-text);
+	--header-link-hover:var(--color-primary-hover);
+
+	--footer-bg:var(--color-bg);
+	--footer-text:var(--color-text-soft);
+	--footer-link:var(--color-text);
+	--footer-link-hover:var(--color-primary-hover);
+
+	--button-text:#ffffff;
+	--button-text-hover:#ffffff;
+	--shadow-sm:0 4px 14px rgba(0,0,0,.22);
+	--shadow-md:0 14px 34px rgba(0,0,0,.32);
+	--shadow-header:0 8px 24px rgba(0,0,0,.32);
+	--shadow-footer:0 -8px 24px rgba(0,0,0,.32);
+
+}

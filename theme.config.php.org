@@ -16,6 +16,9 @@ return array(
     ),
 
     'styles' => array(
+        // Activa o desactiva el framework CSS de PHL (/resources/css/PHL-fw-*.css).
+        'load_phl_css_framework' => true,
+
         // Cargar o no la hoja de estilos del tema hijo.
         'load_child_stylesheet' => false,
 

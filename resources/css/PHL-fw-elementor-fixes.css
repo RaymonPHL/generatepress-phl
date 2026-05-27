@@ -1,0 +1,83 @@
+/*
+Theme Name: GeneratePress PHL
+Theme URI: http://phl.cc
+Author: RaymonPHL
+Author URI: http://phl.cc
+Description: Tema hijo de GeneratePress de PHL.cc
+Text Domain: generatepress-phl
+Template: generatepress
+*/
+/* =========================
+GENERATEPRESS
+========================= */
+
+.site-content{
+	padding-top:0;
+	padding-bottom:0;
+}
+
+.site-header{
+	background:var(--header-bg);
+	color:var(--header-text);
+	border-bottom:1px solid var(--header-border);
+	box-shadow:var(--shadow-header);
+}
+
+.site-header a{
+	color:var(--header-link);
+}
+
+.site-header a:hover{
+	color:var(--header-link-hover);
+}
+
+.site-footer,
+.site-info{
+	background:var(--footer-bg);
+	color:var(--footer-text);
+	border-top:1px solid var(--footer-border);
+	box-shadow:var(--shadow-footer);
+}
+
+.site-footer a,
+.site-info a{
+	color:var(--footer-link);
+}
+
+.site-footer a:hover,
+.site-info a:hover{
+	color:var(--footer-link-hover);
+}
+
+/* =========================
+ELEMENTOR
+========================= */
+
+.elementor-section,
+.elementor-container,
+.elementor-column,
+.elementor-widget{
+	margin:0;
+}
+
+.elementor-widget-text-editor p:last-child{
+	margin-bottom:0;
+}
+
+.elementor-button{
+	border-radius:var(--radius-button)!important;
+	transition:var(--transition)!important;
+}
+
+.elementor-button:hover{
+	transform:translateY(-2px);
+}
+
+.elementor-widget-heading h1,
+.elementor-widget-heading h2,
+.elementor-widget-heading h3,
+.elementor-widget-heading h4,
+.elementor-widget-heading h5,
+.elementor-widget-heading h6{
+	margin-bottom:0;
+}

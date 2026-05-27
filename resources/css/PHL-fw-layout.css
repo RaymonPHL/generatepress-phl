@@ -1,0 +1,22 @@
+/*
+Theme Name: GeneratePress PHL
+Theme URI: http://phl.cc
+Author: RaymonPHL
+Author URI: http://phl.cc
+Description: Tema hijo de GeneratePress de PHL.cc
+Text Domain: generatepress-phl
+Template: generatepress
+*/
+/* =========================
+LAYOUT
+========================= */
+
+.grid-container,
+.site-content,
+.inside-header,
+.inside-navigation,
+.inside-footer-widgets,
+.inside-site-info{
+	width:min(calc(100% - 40px),var(--container));
+	margin-inline:auto;
+}

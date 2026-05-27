@@ -2,11 +2,24 @@
 
 // FUNCIONES GENERALES
 // ===========================
+function phl_ensure_theme_config_file() {
+    $config_file = get_stylesheet_directory() . '/theme.config.php';
+    $config_template = get_stylesheet_directory() . '/theme.config.php.org';
+
+    if (file_exists($config_file) || !file_exists($config_template)) {
+        return $config_file;
+    }
+
+    copy($config_template, $config_file);
+
+    return $config_file;
+}
+
 function phl_theme_config($key = null, $default = null) {
     static $config = null;
 
     if ($config === null) {
-        $config_file = get_stylesheet_directory() . '/theme.config.php';
+        $config_file = phl_ensure_theme_config_file();
         $config = file_exists($config_file) ? require $config_file : array();
 
         if (!is_array($config)) {
@@ -128,8 +141,11 @@ function phl_get_asset_files($directory, $extension) {
 }
 
 // Combina CSS sin minificarlo con regex agresivas.
-function phl_combine_css($css_dir) {
-    $css_files = phl_get_asset_files($css_dir, 'css');
+function phl_combine_css($css_dir, $css_files = null) {
+    if ($css_files === null) {
+        $css_files = phl_get_asset_files($css_dir, 'css');
+    }
+
     $combined_content = '';
 
     foreach ($css_files as $file) {

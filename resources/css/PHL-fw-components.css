@@ -1,0 +1,62 @@
+/*
+Theme Name: GeneratePress PHL
+Theme URI: http://phl.cc
+Author: RaymonPHL
+Author URI: http://phl.cc
+Description: Tema hijo de GeneratePress de PHL.cc
+Text Domain: generatepress-phl
+Template: generatepress
+*/
+/* =========================
+BOTONES
+========================= */
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.wp-block-button__link,
+.elementor-button{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	gap:10px;
+	padding:var(--button-padding);
+	border:1px solid var(--button-border);
+	border-radius:var(--radius-button);
+	background:var(--button-color);
+	color:var(--button-text);
+	font-size:var(--button-font-size);
+	font-weight:var(--button-font-weight);
+	line-height:1.2;
+	box-shadow:var(--shadow-button);
+	transition:var(--transition);
+	cursor:pointer;
+	text-decoration:none;
+	appearance:none;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.button:hover,
+.wp-block-button__link:hover,
+.elementor-button:hover{
+	border-color:var(--button-border-hover);
+	background:var(--button-color-hover);
+	color:var(--button-text-hover);
+	box-shadow:var(--shadow-button-hover);
+	transform:translateY(-2px);
+}
+
+/* =========================
+CARDS
+========================= */
+
+article,
+.inside-article{
+	border-radius:var(--radius-article);
+	box-shadow:var(--shadow-article);
+}
