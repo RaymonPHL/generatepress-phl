@@ -34,9 +34,9 @@ function phl_theme_config($key = null, $default = null) {
 }
 
 function phl_is_development_mode() {
-    $debug_flag = phl_theme_config('assets.debug_flag', 'debug.flag');
+    $debug_mode = phl_theme_config('assets.debug_mode', false);
 
-    return file_exists(get_stylesheet_directory() . '/' . $debug_flag) ||
+    return $debug_mode ||
         (defined('WP_DEBUG') && WP_DEBUG) ||
         (defined('WP_ENV') && WP_ENV !== 'production');
 }

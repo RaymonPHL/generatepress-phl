@@ -12,10 +12,10 @@ Agrega tus archivos personalizados en las carpetas correspondientes dentro de `/
     se incluirán y minimizarán de manera automática en la manera de lo posible salvo images.
 Mantener sin tocar los archivos `PHL-*` porque podrían ser cambiados en la siguiente versión.
 
-Habilita el debug renombrando `_debug.flag` a `debug.flag` para separar archivos y debugear mejor y viceversa para producción.
+Activa o desactiva el debug desde `theme.config.php` usando `assets.debug_mode`.
 
 La configuracion general del tema esta en `theme.config.php`.
-Desde ahi puedes activar/desactivar la combinacion de assets, el nombre del flag de debug,
+Desde ahi puedes activar/desactivar la combinacion de assets, el modo debug,
 la limpieza de cache y los estilos base que se eliminan de WordPress, GeneratePress y Elementor.
 
 Utiliza `/assets/` y el resto de estructura del tema padre de generatepress para sobrescribirle.
