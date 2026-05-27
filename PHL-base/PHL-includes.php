@@ -13,8 +13,12 @@ Template: generatepress
 require_once get_stylesheet_directory() . '/PHL-base/PHL-herramientas.php'; // Herramientas PHL del tema hijo
 
 // Incluir TODOS los archivos PHP del directorio /resources/inc
-function include_all_php_files() {
+function phl_include_all_php_files() {
     $inc_dir = get_stylesheet_directory() . '/resources/inc/';
+
+    if (!is_dir($inc_dir)) {
+        return;
+    }
     
     // Escanear el directorio
     $php_files = scandir($inc_dir);
@@ -29,4 +33,4 @@ function include_all_php_files() {
         }
     }
 }
-add_action('after_setup_theme', 'include_all_php_files');
+add_action('after_setup_theme', 'phl_include_all_php_files');

@@ -30,8 +30,8 @@ function phl_load_custom_fonts() {
             $base_font_name = preg_replace('/-[a-z0-9]+$/i', '', $font_name);
             
             $font_url = $fonts_url . $file;
-            $format = get_font_format($extension);
-            $weight_style = detect_font_weight_style($font_name);
+            $format = phl_get_font_format($extension);
+            $weight_style = phl_detect_font_weight_style($font_name);
 
             $css .= "
 @font-face {
@@ -191,8 +191,8 @@ function phl_load_fonts_in_elementor_editor() {
             $base_font_name = preg_replace('/-[a-z0-9]+$/i', '', $font_name);
             
             $font_url = $fonts_url . $file;
-            $format = get_font_format($extension);
-            $weight_style = detect_font_weight_style($font_name);
+            $format = phl_get_font_format($extension);
+            $weight_style = phl_detect_font_weight_style($font_name);
 
             $css .= "
 @font-face {

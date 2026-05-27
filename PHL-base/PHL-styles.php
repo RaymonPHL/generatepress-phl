@@ -12,42 +12,42 @@ Template: generatepress
 // Incluir los styles PHL
 // ===========================
 // Incluir TODOS los archivos CSS del directorio /resources/css
-function add_ALL_styles() {
+function phl_add_all_styles() {
     $css_dir = get_stylesheet_directory() . '/resources/css/';
     $css_url = get_stylesheet_directory_uri() . '/resources/css/';
-    
-    // Definir si estamos en producción (ajusta según tu entorno)
-    $WebEnDesarrollo = file_exists(get_stylesheet_directory() . '/debug.flag') || 
-                   (defined('WP_DEBUG') && WP_DEBUG) ||
-                   (defined('WP_ENV') && WP_ENV !== 'production'); // Puedes crear este archivo para desarrollo
-    
+
+    if (!is_dir($css_dir)) {
+        return;
+    }
+
     // $WebEnProduccion=false;
-    if (!$WebEnDesarrollo) {
-        // MODO MINIFICADO: Combinar y minificar todos los CSS
-        $combined_css = combine_and_minify_css($css_dir);
+    if (!phl_is_development_mode() && phl_theme_config('assets.combine_in_production', true)) {
+        // MODO PRODUCCION: Combinar todos los CSS
+        $combined_css = phl_combine_css($css_dir);
         
         if ($combined_css) {
             wp_enqueue_style(
-                'all-styles-minified',
-                $combined_css
+                'phl-all-styles',
+                $combined_css['url'],
+                array(),
+                $combined_css['version'],
+                'all'
             );
         }
     } else {
         // MODO NORMAL: Cargar archivos individualmente
-        $css_files = scandir($css_dir);
+        $css_files = phl_get_asset_files($css_dir, 'css');
         
         foreach ($css_files as $file) {
-            if (pathinfo($file, PATHINFO_EXTENSION) === 'css' && $file !== '.' && $file !== '..') {
-                $handle = 'style-' . pathinfo($file, PATHINFO_FILENAME);
-                wp_enqueue_style(
-                    $handle,
-                    $css_url . $file,
-                    array(),
-                    filemtime($css_dir . $file), // Cache busting
-                    'all'
-                );
-            }
+            $handle = 'phl-style-' . sanitize_key(pathinfo($file, PATHINFO_FILENAME));
+            wp_enqueue_style(
+                $handle,
+                $css_url . $file,
+                array(),
+                filemtime($css_dir . $file), // Cache busting
+                'all'
+            );
         }
     }
 }
-add_action('wp_enqueue_scripts', 'add_ALL_styles');
+add_action('wp_enqueue_scripts', 'phl_add_all_styles', 20);

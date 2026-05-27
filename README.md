@@ -14,6 +14,10 @@ Mantener sin tocar los archivos `PHL-*` porque podrían ser cambiados en la sigu
 
 Habilita el debug renombrando `_debug.flag` a `debug.flag` para separar archivos y debugear mejor y viceversa para producción.
 
+La configuracion general del tema esta en `theme.config.php`.
+Desde ahi puedes activar/desactivar la combinacion de assets, el nombre del flag de debug,
+la limpieza de cache y los estilos base que se eliminan de WordPress, GeneratePress y Elementor.
+
 Utiliza `/assets/` y el resto de estructura del tema padre de generatepress para sobrescribirle.
 
 Hay algunos recursos en `/examples/` que puedes utilizar para copiarlos a `/resources/`
